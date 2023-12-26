@@ -33,7 +33,7 @@
 		let previousPoint = points[0];
 		points.forEach((point, i) => {
 			if (previousPoint && i > 0) {
-				point.lerp(previousPoint, Math.pow(0.000001, delta));
+				point.lerp(previousPoint, Math.pow(0.000001, delta * 4));
 				previousPoint = point;
 			}
 		});
@@ -43,5 +43,5 @@
 
 <T.Mesh {...$$restProps}>
 	<MeshLineGeometry {points} shape={'taper'} />
-	<MeshLineMaterial {width} {color} scaleDown={0.1} attenuate={false} />
+	<MeshLineMaterial {width} {color} scaleDown={0.2} attenuate={false} />
 </T.Mesh>

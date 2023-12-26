@@ -1,25 +1,17 @@
-<script lang="ts" context="module">
-	const geometry = new SphereGeometry(1);
-	const material = new MeshBasicMaterial({ color: 'red' });
-</script>
-
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { OrbitControls } from '@threlte/extras';
-	import { Attractor, Collider, RigidBody } from '@threlte/rapier';
+
+	import Ball from './Ball/Ball.svelte';
 	import type { GravityType } from '@threlte/rapier';
-	import { MeshBasicMaterial, SphereGeometry } from 'three';
-	export let type: GravityType = 'newtonian';
-	let hide = false;
-	export const reset = () => {
-		hide = true;
-		setTimeout(() => (hide = false));
-	};
+
+	let type: GravityType = 'static';
+
 	const config: any = {
 		static: {
 			type: 'static',
-			strength: 3,
-			range: 200,
+			strength: 3000,
+			range: 1000,
 			gravitationalConstant: undefined
 		},
 		linear: {
@@ -30,8 +22,8 @@
 		},
 		newtonian: {
 			type: 'newtonian',
-			strength: 10,
-			range: 200,
+			strength: 20,
+			range: 1000,
 			gravitationalConstant: 10
 		}
 	};
@@ -41,29 +33,7 @@
 	<OrbitControls enableZoom={true} target.y={20} />
 </T.PerspectiveCamera>
 <T.DirectionalLight castShadow position={[8, 20, -3]} />
-{#if !hide}
-	<T.Group position={[-50, 0, 0]}>
-		<RigidBody linearVelocity={[-5, 0, 5]}>
-			<Collider shape="ball" args={[1]} mass={config[type].strength} />
-			<T.Mesh {geometry} {material} />
-			<Attractor
-				range={config[type].range}
-				gravitationalConstant={config[type].gravitationalConstant}
-				strength={config[type].strength}
-				gravityType={type}
-			/>
-		</RigidBody>
-	</T.Group>
-	<T.Group position={[100, 0, 0]}>
-		<RigidBody linearVelocity={[-5, 0, 5]}>
-			<Collider shape="ball" args={[1]} mass={config[type].strength} />
-			<T.Mesh {geometry} {material} />
-			<Attractor
-				range={config[type].range}
-				gravitationalConstant={config[type].gravitationalConstant}
-				strength={config[type].strength}
-				gravityType={type}
-			/>
-		</RigidBody>
-	</T.Group>
-{/if}
+
+<Ball initialPos={[0, -50, 0]} {config} {type} linearVelocity={[20, 0, 0]} />
+<Ball initialPos={[0, 50, 0]} {config} {type} linearVelocity={[-20, 0, 0]} />
+<Ball initialPos={[0, 0, 0]} {config} {type} hasAttractor />

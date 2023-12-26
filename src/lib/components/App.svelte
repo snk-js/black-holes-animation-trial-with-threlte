@@ -5,14 +5,12 @@
 	import type { GravityType } from '@threlte/rapier';
 	import AdvancedScene from './Scene.svelte';
 	let reset: (() => void) | undefined;
-	const gravityTypes: GravityType[] = ['static', 'linear', 'newtonian'];
-	let gravityType: GravityType = gravityTypes[0];
 </script>
 
 <div>
 	<Canvas>
 		<World gravity={[0, 0, 0]}>
-			<AdvancedScene type={gravityType} bind:reset />
+			<AdvancedScene />
 			<HTML slot="fallback" transform>
 				<p>
 					It seems your browser<br />

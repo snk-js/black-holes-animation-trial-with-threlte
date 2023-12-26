@@ -19,7 +19,7 @@
 		width: 100vw;
 		height: 100vh;
 		background: black;
-		background: radial-gradient(ellipse at top, #162a3f, #05080f50),
-			radial-gradient(ellipse at bottom, #243157, #000000);
+		background: radial-gradient(ellipse at top, #121d2a, #05080f50),
+			radial-gradient(ellipse at bottom, #000000, #000000);
 	}
 </style>
