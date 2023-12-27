@@ -14,10 +14,12 @@
 	export let hasAttractor = false;
 	export let type: GravityType = 'static';
 
-	const accelerationRate = 2; // Adjust the rate of acceleration
+	const baseAccelerationRate = 2; // Base rate of acceleration
+	const accelerationIncrement = 1.2; // Increment rate for acceleration per update
+	let accelerationMultiplier = 2; // Multiplier for acceleration
 
 	const rigidBody = useRigidBody();
-	const maxDistance = 50; // Set your maximum distance
+	const maxDistance = 100; // Set your maximum distance
 	const center = new Vector3(0, 0, 0); // Assuming center is at (0, 0, 0)
 	let it = 0;
 
@@ -33,9 +35,18 @@
 				it++;
 			}
 		}
+		// Increment the acceleration multiplier
+		accelerationMultiplier += accelerationIncrement * delta;
 
+		// Apply updated orbital velocity for the orbiting rigid bodies
 		if (rigidBody?.userData?.id === 1 || rigidBody?.userData?.id === 2) {
-			updateOrbitalVelocity(rigidBody, accelerationRate, maxDistance, center);
+			updateOrbitalVelocity(
+				rigidBody,
+				baseAccelerationRate,
+				maxDistance,
+				center,
+				accelerationMultiplier
+			);
 		}
 	});
 
@@ -43,15 +54,14 @@
 		rigidB: typeof rigidBody,
 		rate: number,
 		maxDistance: number,
-		center: Vector3
+		center: Vector3,
+		multiplier: number
 	) {
 		const position = rigidB?.translation(); // Get the current position
 		if (!position) return;
 
 		// Calculate the distance from the center
 		const distance = new Vector3(position.x, position.y, position.z).distanceTo(center);
-
-		console.log(position);
 
 		if (distance > maxDistance) {
 			// Calculate the direction from the center to the object
@@ -64,7 +74,7 @@
 
 		// Calculate the tangential direction
 		const tangentialDirection = new Vector3(-position.y, position.x, 0).normalize();
-		const newVelocityMagnitude = Math.sqrt(rate * distance * 200); // Adjust this calculation as needed
+		const newVelocityMagnitude = Math.sqrt(rate * distance * 200) * multiplier; // Apply the multiplier
 		const newVelocity = tangentialDirection.multiplyScalar(newVelocityMagnitude);
 
 		rigidB?.setLinvel(newVelocity, true);
