@@ -1,5 +1,8 @@
 trying to simulate a binary black-holes systems spreading waves and emanating energy through the space, merging themselves after a final rotation velocity between them. 
 using [rapier phisics to achieve this](https://rapier.rs/docs/)
+
+https://github.com/snk-js/rotating-black-holes-scene-with-threlte/assets/34718184/c49f9814-24a2-4ccc-b1aa-529beb60b418
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
