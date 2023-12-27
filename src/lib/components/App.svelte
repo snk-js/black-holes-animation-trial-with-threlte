@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
 	import { HTML } from '@threlte/extras';
-	import { World, Debug } from '@threlte/rapier';
-	import type { GravityType } from '@threlte/rapier';
+	import { World } from '@threlte/rapier';
 	import AdvancedScene from './Scene.svelte';
 	import { Pane, Slider, TabGroup, TabPage, Checkbox, Button, Color } from 'svelte-tweakpane-ui';
 	import { OrbsSettings, lines, linesSettings, orbs } from '$src/store';
-	let reset: (() => void) | undefined;
 
+	let reset: (() => void) | undefined;
 	let _orbs = OrbsSettings;
 
 	orbs.subscribe((newSettings) => {
@@ -25,7 +24,12 @@
 	<Button title="Reset the scene" on:click={reset} />
 	<TabGroup>
 		<TabPage title="Orbs settings">
-			<Slider bind:value={_orbs.baseAccelerationRate} label="Strength left" min={0.001} max={3} />
+			<Slider
+				bind:value={_orbs.baseAccelerationRate}
+				label="Acceleration Rate"
+				min={0.001}
+				max={3}
+			/>
 			<Slider
 				bind:value={_orbs.accelerationIncrement}
 				label="Acceleration Increment"
@@ -35,8 +39,8 @@
 			<Slider
 				bind:value={_orbs.accelerationMultiplier}
 				label="Acceleration multiplier"
-				min={0.1}
-				max={5}
+				min={0.001}
+				max={10}
 			/>
 			<Slider bind:value={_orbs.maxDistance} label="Max Distance" min={4} max={300} />
 		</TabPage>

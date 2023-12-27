@@ -11,13 +11,17 @@
 	import { OrbsSettings, orbs } from '$src/store';
 
 	let _orbs = OrbsSettings;
-	orbs.subscribe((newSettings) => {
-		_orbs = newSettings;
-	});
 
 	let reset: (() => void) | undefined;
 
 	let accMult = _orbs.accelerationMultiplier;
+	let accIncr = _orbs.accelerationIncrement;
+
+	orbs.subscribe((newSettings) => {
+		_orbs = newSettings;
+		accMult = newSettings.accelerationMultiplier;
+		accIncr = newSettings.accelerationIncrement;
+	});
 
 	export let config: Config;
 	export let hasAttractor = false;
@@ -40,10 +44,10 @@
 			}
 		}
 		// Increment the acceleration multiplier
-		accMult += _orbs.accelerationIncrement * delta;
+		accMult += accIncr * delta;
 
 		// Apply updated orbital velocity for the orbiting rigid bodies
-		if (rigidBody?.userData?.id === 1 || rigidBody?.userData?.id === 2) {
+		if (rigidBody?.userData?.id) {
 			updateOrbitalVelocity(center, accMult);
 		}
 	});
@@ -64,7 +68,6 @@
 			rigidBody?.setTranslation(newPosition, true);
 		}
 
-		// Calculate the tangential direction
 		const tangentialDirection = new Vector3(-position.y, position.x, 0).normalize();
 		const newVelocityMagnitude =
 			Math.sqrt(_orbs.baseAccelerationRate * distance * 200) * multiplier; // Apply the multiplier

@@ -4,6 +4,7 @@
 	import { Vector3 } from 'three';
 	import { spring } from 'svelte/motion';
 	import { lines, linesSettings } from '$src/store';
+	import { get } from 'svelte/store';
 
 	let _lines = linesSettings;
 	lines.subscribe((newSettings) => {
@@ -50,9 +51,9 @@
 <T.Mesh {...$$restProps}>
 	<MeshLineGeometry {points} shape={'taper'} />
 	<MeshLineMaterial
-		width={_lines.width}
-		color={_lines.color}
-		scaleDown={_lines.scaleDown}
-		attenuate={_lines.attenuate}
+		width={get(lines).width}
+		color={get(lines).color}
+		scaleDown={get(lines).scaleDown}
+		attenuate={get(lines).attenuate}
 	/>
 </T.Mesh>
