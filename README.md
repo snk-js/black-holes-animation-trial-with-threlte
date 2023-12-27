@@ -1,3 +1,5 @@
+trying to simulate a binary black-holes systems spreading waves and emanating energy through the space, merging themselves after a final rotation velocity between them. 
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
