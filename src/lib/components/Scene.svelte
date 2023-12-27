@@ -10,13 +10,13 @@
 	const config: any = {
 		static: {
 			type: 'static',
-			strength: 3000,
+			strength: 1500,
 			range: 1000,
 			gravitationalConstant: undefined
 		},
 		linear: {
 			type: 'linear',
-			strength: 1,
+			strength: 30,
 			range: 100,
 			gravitationalConstant: undefined
 		},
@@ -34,6 +34,18 @@
 </T.PerspectiveCamera>
 <T.DirectionalLight castShadow position={[8, 20, -3]} />
 
-<Ball initialPos={[0, -50, 0]} {config} {type} linearVelocity={[20, 0, 0]} />
-<Ball initialPos={[0, 50, 0]} {config} {type} linearVelocity={[-20, 0, 0]} />
-<Ball initialPos={[0, 0, 0]} {config} {type} hasAttractor />
+<Ball
+	initialPos={[0, -50, 0]}
+	{config}
+	{type}
+	linearVelocity={[50, 0, 0]}
+	userData={{ center: false, id: 1 }}
+/>
+<Ball
+	initialPos={[0, 50, 0]}
+	{config}
+	{type}
+	linearVelocity={[-50, 0, 0]}
+	userData={{ center: false, id: 2 }}
+/>
+<Ball initialPos={[0, 0, 0]} {config} {type} hasAttractor userData={{ center: true }} />
