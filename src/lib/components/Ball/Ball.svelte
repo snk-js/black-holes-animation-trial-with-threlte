@@ -5,7 +5,12 @@
 	import Line from '../Line/Line.svelte';
 	import RigidBodySettings from '../RigidBodySettings/RigidBodySettings.svelte';
 	import type { Config } from '$lib/types/config';
+	import { lines, linesSettings } from '$src/store';
+	let _lines = linesSettings;
 
+	lines.subscribe((newSettings) => {
+		_lines = newSettings;
+	});
 	type Vec3 = [x: number, y: number, z: number];
 
 	let ballRef: Group;
@@ -14,7 +19,6 @@
 	export let config: Config;
 	export let hasAttractor = false;
 	export let type: GravityType = 'static';
-	export let initialPos: Vec3 = [0, 50, 0];
 	export let userData: any = {};
 	export let linearVelocity: Vec3 = [0, 0, 0];
 
@@ -30,5 +34,11 @@
 	</RigidBody>
 </T.Group>
 <T.Group>
-	<Line color="#ff0000" position={ballRefPos} stiffness={1} damping={0.5} width={10}></Line>
+	<Line
+		color={_lines.color}
+		position={ballRefPos}
+		stiffness={_lines.stiffness}
+		damping={_lines.damping}
+		width={_lines.width}
+	></Line>
 </T.Group>

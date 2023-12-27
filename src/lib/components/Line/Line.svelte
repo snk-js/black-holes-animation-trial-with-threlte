@@ -3,21 +3,24 @@
 	import { MeshLineGeometry, MeshLineMaterial } from '@threlte/extras';
 	import { Vector3 } from 'three';
 	import { spring } from 'svelte/motion';
+	import { lines, linesSettings } from '$src/store';
+
+	let _lines = linesSettings;
+	lines.subscribe((newSettings) => {
+		_lines = newSettings;
+	});
+
 	export let position: { x: number; y: number; z: number };
-	export let color: string;
-	export let width: number;
-	export let stiffness: number;
-	export let damping: number;
 
 	let springObject = spring(
 		{ x: 0, y: 0, z: 0 },
 		{
-			stiffness,
-			damping
+			stiffness: _lines.stiffness,
+			damping: _lines.damping
 		}
 	);
 	let points: Vector3[] = [];
-	for (let j = 0; j < 50; j++) {
+	for (let j = 0; j < _lines.pointsQtd; j++) {
 		points.push(new Vector3(0, 0, 0));
 	}
 	$: springObject.set(position);
@@ -33,7 +36,10 @@
 		let previousPoint = points[0];
 		points.forEach((point, i) => {
 			if (previousPoint && i > 0) {
-				point.lerp(previousPoint, Math.pow(0.5, delta * 8));
+				point.lerp(
+					previousPoint,
+					Math.pow(_lines.lerpPowerMultiplier, delta * _lines.deltaMultiplier)
+				);
 				previousPoint = point;
 			}
 		});
@@ -43,5 +49,10 @@
 
 <T.Mesh {...$$restProps}>
 	<MeshLineGeometry {points} shape={'taper'} />
-	<MeshLineMaterial {width} {color} scaleDown={0.2} attenuate={false} />
+	<MeshLineMaterial
+		width={_lines.width}
+		color={_lines.color}
+		scaleDown={_lines.scaleDown}
+		attenuate={_lines.attenuate}
+	/>
 </T.Mesh>
