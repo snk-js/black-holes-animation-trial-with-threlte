@@ -22,7 +22,7 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/black-hole-animation-trial-with-threlte'
+          BASE_PATH: '/rotating-black-holes-scene-with-threlte'
         run: |
           npm run build
           touch build/.nojekyll
